@@ -1,0 +1,21 @@
+_admin_healthcheck:
+  path: /healthcheck
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\HealthCheck\Controller\Admin\HealthCheckController::indexAction'
+    _prevent_redirect: true
+
+admin_healthcheck_configure:
+  path: /healthcheck/configure
+  methods: [GET]
+  defaults:
+    _controller: 'PrestaShop\Module\HealthCheck\Controller\Admin\HealthCheckController::configureAction'
+    _legacy_controller: AdminHealthCheck
+    _legacy_link: AdminHealthCheck
+
+admin_healthcheck_configure_process:
+  path: /healthcheck/configure
+  methods: [POST]
+  defaults:
+    _controller: 'PrestaShop\Module\HealthCheck\Controller\Admin\HealthCheckController::configureProcessAction'
+    _legacy_controller: AdminHealthCheck

@@ -1,0 +1,10 @@
+## Directory-based project format:
+.idea/
+
+.php_cs.cache
+/config_*.xml
+/translations/*.php
+node_modules
+vendor
+!vendor/index.php
+!vendor/.htaccess

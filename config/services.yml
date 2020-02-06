@@ -1,0 +1,40 @@
+imports:
+  - { resource: checks.yml }
+
+services:
+  _defaults:
+    public: true
+
+  prestashop.module.healthcheck.checks_runner:
+    class: PrestaShop\Module\HealthCheck\Check\ChecksRunner
+    arguments:
+      - ['@prestashop.module.healthcheck.check_dir']
+
+  prestashop.module.healthcheck.repository:
+    class: PrestaShop\Module\HealthCheck\Repository\HealthCheckConfigRepository
+    arguments:
+      $connection: '@doctrine.dbal.default_connection'
+      $dbPrefix: '%database_prefix%'
+
+  prestashop.module.healthcheck.form_provider:
+    class: PrestaShop\Module\HealthCheck\Form\HealthCheckConfigFormDataProvider
+    arguments:
+      $repository: '@prestashop.module.healthcheck.repository'
+
+  prestashop.module.healthcheck.form_handler:
+    class: 'PrestaShop\PrestaShop\Core\Form\FormHandler'
+    arguments:
+      $formBuilder: '@=service("form.factory").createBuilder()'
+      $hookDispatcher: '@prestashop.core.hook.dispatcher'
+      $formDataProvider: '@prestashop.module.healthcheck.form_provider'
+      $formTypes:
+        'health_check_config': 'PrestaShop\Module\HealthCheck\Form\Type\HealthCheckConfigType'
+      $hookName: 'AdminHealthCheck'
+
+  prestashop.module.healthcheck.request_listener:
+    class: PrestaShop\Module\HealthCheck\Listener\HealthCheckListener
+    arguments:
+      - "@prestashop.adapter.legacy.context"
+      - "@prestashop.module.healthcheck.repository"
+    tags:
+      - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }

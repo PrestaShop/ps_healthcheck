@@ -1,0 +1,6 @@
+services:
+  prestashop.module.healthcheck.check_dir:
+    public: false
+    class: 'Laminas\Diagnostics\Check\DirWritable'
+    arguments:
+      - !php/const _PS_CACHE_DIR_
