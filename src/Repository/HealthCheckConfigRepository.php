@@ -8,6 +8,7 @@ use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Query\QueryBuilder;
 use PrestaShop\Module\HealthCheck\Entity\HealthCheckConfig;
 use PrestaShop\PrestaShop\Core\Exception\DatabaseException;
+use Tools;
 
 class HealthCheckConfigRepository
 {
@@ -41,7 +42,7 @@ class HealthCheckConfigRepository
 
         $data = $qb->execute()->fetchAll(FetchMode::ASSOCIATIVE);
 
-        if (!is_array($data) || empty($data) || empty($data[0])) {
+        if (empty($data[0])) {
             return null;
         }
 
@@ -87,7 +88,7 @@ PRIMARY KEY (`id_health_check_config`)
         $statement = $this->connection->executeQuery($query);
         if (0 != (int) $statement->errorCode()) {
             return [
-                'key' => json_encode($statement->errorInfo()),
+                'key' => $statement->errorInfo(),
                 'parameters' => [],
                 'domain' => 'Admin.Modules.Notification',
             ];
@@ -111,14 +112,14 @@ PRIMARY KEY (`id_health_check_config`)
             ])
             ->setParameters([
                 'idHealthCheckConfig' => 1,
-                'token' => \Tools::passwdGen(128, 'RANDOM'),
+                'token' => Tools::passwdGen(128, 'RANDOM'),
                 'ips' => '127.0.0.1,::1',
             ]);
         $statement = $this->executeQueryBuilder($qb, 'HealthCheck config error');
 
         if ($statement instanceof Statement && 0 != (int) $statement->errorCode()) {
             return [
-                'key' => json_encode($statement->errorInfo()),
+                'key' => $statement->errorInfo(),
                 'parameters' => [],
                 'domain' => 'Admin.Modules.Notification',
             ];
@@ -136,7 +137,7 @@ PRIMARY KEY (`id_health_check_config`)
         $statement = $this->connection->executeQuery($sql);
         if ($statement instanceof Statement && 0 != (int) $statement->errorCode()) {
             return [
-                'key' => json_encode($statement->errorInfo()),
+                'key' => $statement->errorInfo(),
                 'parameters' => [],
                 'domain' => 'Admin.Modules.Notification',
             ];

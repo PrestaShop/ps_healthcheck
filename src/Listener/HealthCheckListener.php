@@ -5,6 +5,7 @@ namespace PrestaShop\Module\HealthCheck\Listener;
 use PrestaShop\Module\HealthCheck\Repository\HealthCheckConfigRepository;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use Symfony\Component\HttpFoundation\IpUtils;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -61,7 +62,7 @@ class HealthCheckListener
         $request = Request::createFromGlobals();
         if ($request->isXmlHttpRequest()) {
             $event->setResponse(
-                new RedirectResponse($request->getUri(), Response::HTTP_FORBIDDEN)
+                new JsonResponse(null, Response::HTTP_FORBIDDEN)
             );
 
             return null;

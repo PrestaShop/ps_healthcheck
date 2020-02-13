@@ -51,17 +51,11 @@ class HealthCheckConfig
      */
     private $ips;
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getToken(): string
     {
         return $this->token;
@@ -77,9 +71,6 @@ class HealthCheckConfig
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getIps(): string
     {
         return $this->ips;

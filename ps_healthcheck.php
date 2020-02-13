@@ -51,14 +51,12 @@ class Ps_Healthcheck extends Module
         $this->author = 'PrestaShop';
         $this->version = '0.1.0';
         $this->need_instance = 0;
-
         $this->bootstrap = true;
-        parent::__construct();
-
         $this->description = $this->trans('Adds an endpoint to perform application health check.', [], 'Modules.Healthcheck.Admin');
         $this->secure_key = Tools::encrypt($this->name);
+        $this->ps_versions_compliancy = ['min' => '1.7.7.0', 'max' => _PS_VERSION_];
 
-        $this->ps_versions_compliancy = ['min' => '1.7.8.0', 'max' => _PS_VERSION_];
+        parent::__construct();
     }
 
     public function install()
